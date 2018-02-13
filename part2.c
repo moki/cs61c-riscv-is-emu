@@ -52,14 +52,14 @@ void execute_rtype(Instruction instruction, Processor *processor) {
         case 0x0:
             switch (instruction.rtype.funct7) {
                 case 0x0:
-                            // Add
+                    // Add
                     break;
                 case 0x1:
                     // Mul 
-                            break;
+                    break;
                 case 0x20:
                     // Sub
-                            break;
+                    break;
                 default:
                     handle_invalid_instruction(instruction);
                     exit(-1);
@@ -132,7 +132,6 @@ void execute_rtype(Instruction instruction, Processor *processor) {
 }
 
 void execute_itype_except_load(Instruction instruction, Processor *processor) {
-    int shiftOp;
     switch (instruction.itype.funct3) {
         case 0x0:
             // ADDI
@@ -246,10 +245,11 @@ void execute_lui(Instruction instruction, Processor *processor) {
     /* YOUR CODE HERE */
 }
 
-void store(Byte *memory,Address address,Alignment alignment,Word value) {
+void store(Byte *memory, Address address, Alignment alignment, Word value) {
     /* YOUR CODE HERE */
 }
 
-Word load(Byte *memory,Address address,Alignment alignment) {
+Word load(Byte *memory, Address address, Alignment alignment) {
     /* YOUR CODE HERE */
+    return 0;
 }

@@ -6,7 +6,7 @@ CFLAGS := -g -std=gnu99 -Wall
 
 ASM_TESTS := simple multiply random
 
-all: riscv part1
+all: riscv part1 part2
 	@echo "=============All tests finished============="
 
 .PHONY: part1 %_disasm
@@ -25,6 +25,13 @@ part1: riscv $(addsuffix _disasm, $(ASM_TESTS))
 %_disasm: riscvcode/code/%.input riscvcode/ref/%.solution riscv
 	@./riscv -d $< > riscvcode/out/test.dump
 	@diff $(word 2, $^) riscvcode/out/test.dump && echo "$@ TEST PASSED!" || echo "$@ TEST FAILED!"
+
+part2: riscv $(addsuffix _execute, $(ASM_TESTS))
+	@echo "-----------Execute Tests Complete-----------"
+
+%_execute: riscvcode/code/%.input riscvcode/ref/%.solution riscv
+	@./riscv -r $< > riscvcode/out/$*.trace
+	@python2.7 part2_tester.py $*  	 	  
 
 test-utils:
 	gcc $(CFLAGS) -DTESTING -o test-utils test_utils.c utils.c $(CUNIT)

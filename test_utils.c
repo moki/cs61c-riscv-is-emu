@@ -18,7 +18,7 @@ int main(int arc, char **argv) {
 
     if (CUE_SUCCESS != CU_initialize_registry()) {
         return CU_get_error();
-    } 
+    }
 
     pSuite1 = CU_add_suite("Testing sign_extend_number", NULL, NULL);
     if (!pSuite1) {
@@ -64,12 +64,12 @@ int main(int arc, char **argv) {
 }
 
 void test_sign_extend_number() {
-    CU_ASSERT_EQUAL(sign_extend_number(0xFF, 8), 0xFFFFFFFF);
-    CU_ASSERT_EQUAL(sign_extend_number(0xFF, 9), 0xFF);
-    CU_ASSERT_EQUAL(sign_extend_number(0x1234, 16), 0x1234);
-    CU_ASSERT_EQUAL(sign_extend_number(0x1234, 13), 0xFFFFF234);
-    CU_ASSERT_EQUAL(sign_extend_number(0x0,  1), 0);
-    CU_ASSERT_EQUAL(sign_extend_number(0x1, 1), 0xFFFFFFFF);
+	CU_ASSERT_EQUAL(sign_extend_number(0xFF, 8), 0xFFFFFFFF);
+	CU_ASSERT_EQUAL(sign_extend_number(0xFF, 9), 0xFF);
+	CU_ASSERT_EQUAL(sign_extend_number(0x1234, 16), 0x1234);
+	CU_ASSERT_EQUAL(sign_extend_number(0x1234, 13), 0xFFFFF234);
+	CU_ASSERT_EQUAL(sign_extend_number(0x0,  1), 0);
+	CU_ASSERT_EQUAL(sign_extend_number(0x1, 1), 0xFFFFFFFF);
 }
 
 void test_parse_instruction_rtype() {

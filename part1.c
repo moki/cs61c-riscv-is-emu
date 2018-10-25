@@ -12,7 +12,7 @@ void print_lui(Instruction);
 void print_jal(Instruction);
 void print_ecall(Instruction);
 void write_rtype(Instruction);
-void write_itype_except_load(Instruction); 
+void write_itype_except_load(Instruction);
 void write_load(Instruction);
 void write_store(Instruction);
 void write_branch(Instruction);
@@ -66,7 +66,7 @@ void write_rtype(Instruction instruction) {
                     break;
                 default:
                     handle_invalid_instruction(instruction);
-                break;      
+                break;
             }
             break;
         case 0x1:
@@ -87,7 +87,7 @@ void write_rtype(Instruction instruction) {
             break;
         case 0x4:
             switch (instruction.rtype.funct7) {
-                case 0x0:   
+                case 0x0:
                 print_rtype("xor", instruction);
                 break;
                 case 0x1:
@@ -170,7 +170,7 @@ void write_itype_except_load(Instruction instruction) {
             break;
         default:
             handle_invalid_instruction(instruction);
-            break;  
+            break;
     }
 }
 
@@ -223,33 +223,57 @@ void write_branch(Instruction instruction) {
 }
 
 void print_lui(Instruction instruction) {
-    /* YOUR CODE HERE */
+	printf(LUI_FORMAT,
+		instruction.utype.rd,
+		instruction.utype.imm);
 }
 
 void print_jal(Instruction instruction) {
-    /* YOUR CODE HERE */
+	printf(JAL_FORMAT,
+		instruction.ujtype.rd,
+		get_jump_offset(instruction));
 }
 
 void print_ecall(Instruction instruction) {
-    /* YOUR CODE HERE */
+	printf(ECALL_FORMAT);
 }
 
 void print_rtype(char *name, Instruction instruction) {
-    /* YOUR CODE HERE */
+	printf(RTYPE_FORMAT,
+		name,
+		instruction.rtype.rd,
+		instruction.rtype.rs1,
+		instruction.rtype.rs2);
 }
 
 void print_itype_except_load(char *name, Instruction instruction, int imm) {
-    /* YOUR CODE HERE */
+	printf(ITYPE_FORMAT,
+		name,
+		instruction.itype.rd,
+		instruction.itype.rs1,
+		sign_extend_number(imm, 12));
 }
 
 void print_load(char *name, Instruction instruction) {
-    /* YOUR CODE HERE */
+	printf(MEM_FORMAT,
+		name,
+		instruction.itype.rd,
+		instruction.itype.imm,
+		instruction.itype.rs1);
 }
 
 void print_store(char *name, Instruction instruction) {
-    /* YOUR CODE HERE */
+	printf(MEM_FORMAT,
+		name,
+		instruction.stype.rs2,
+		get_store_offset(instruction),
+		instruction.stype.rs1);
 }
 
 void print_branch(char *name, Instruction instruction) {
-    /* YOUR CODE HERE */
+	printf(BRANCH_FORMAT,
+		name,
+		instruction.sbtype.rs1,
+		instruction.sbtype.rs2,
+		get_branch_offset(instruction));
 }

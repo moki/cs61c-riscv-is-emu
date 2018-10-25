@@ -13,6 +13,10 @@ void test_parse_instruction_sbtype();
 void test_parse_instruction_ujtype();
 void test_parse_instruction_utype();
 
+void test_get_branch_offset();
+void test_get_jump_offset();
+void test_get_store_offset();
+
 int main(int arc, char **argv) {
     CU_pSuite pSuite1 = NULL;
 
@@ -53,7 +57,17 @@ int main(int arc, char **argv) {
         goto exit;
     }
 
+    if (!CU_add_test(pSuite1, "test_get_branch_offset", test_get_branch_offset)) {
+        goto exit;
+    }
 
+    if (!CU_add_test(pSuite1, "test_get_jump_offset", test_get_jump_offset)) {
+        goto exit;
+    }
+
+    if (!CU_add_test(pSuite1, "test_get_store_offset", test_get_store_offset)) {
+        goto exit;
+    }
 
     CU_basic_set_mode(CU_BRM_VERBOSE);
     CU_basic_run_tests();
@@ -61,6 +75,54 @@ int main(int arc, char **argv) {
     exit:
     CU_cleanup_registry();
     return CU_get_error();
+}
+
+void test_get_store_offset() {
+	Instruction sw = parse_instruction(0x01312023);
+
+	int offset = get_store_offset(sw);
+
+	CU_ASSERT_EQUAL(offset, 0);
+
+	Instruction sb = parse_instruction(0x00510023);
+
+	offset = get_store_offset(sb);
+
+	CU_ASSERT_EQUAL(offset, 0);
+
+	Instruction sh = parse_instruction(0x005110a3);
+
+	offset = get_store_offset(sh);
+
+	CU_ASSERT_EQUAL(offset, 1);
+}
+
+void test_get_jump_offset() {
+	Instruction jal_1 = parse_instruction(0xff5ff06f);
+
+	int offset = get_jump_offset(jal_1);
+
+	CU_ASSERT_EQUAL(offset, -12);
+
+	Instruction jal_2 = parse_instruction(0x0080006f);
+
+	offset = get_jump_offset(jal_2);
+
+	CU_ASSERT_EQUAL(offset, 8);
+}
+
+void test_get_branch_offset() {
+	Instruction beq_1 = parse_instruction(0x00040863);
+
+	int offset = get_branch_offset(beq_1);
+
+	CU_ASSERT_EQUAL(offset, 16);
+
+	Instruction beq_2 = parse_instruction(0x00650c63);
+
+	offset = get_branch_offset(beq_2);
+
+	CU_ASSERT_EQUAL(offset, 24);
 }
 
 void test_sign_extend_number() {

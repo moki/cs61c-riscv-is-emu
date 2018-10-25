@@ -120,20 +120,43 @@ Instruction parse_instruction(uint32_t instruction_bits) {
 /* Return the number of bytes (from the current PC) to the branch label using the given
  * branch instruction */
 int get_branch_offset(Instruction instruction) {
-    /* YOUR CODE HERE */
-    return 0;
+	int offset = 0x00000000;
+
+	offset |= instruction.sbtype.imm5 & 0x0000001e; // imm[1:4]
+
+	offset |= (instruction.sbtype.imm7 << 5) & 0x000007e0; // imm[5:10]
+
+	offset |= (instruction.sbtype.imm5 << 11) & 0x00000800; // imm[11]
+
+	offset |= (instruction.sbtype.imm7 << 6) & 0x00001000; // imm[12]
+
+	return sign_extend_number(offset, 13);
 }
 
 /* Returns the number of bytes (from the current PC) to the jump label using the given
  * jump instruction */
 int get_jump_offset(Instruction instruction) {
-    /* YOUR CODE HERE */
-    return 0;
+	int offset = 0x00000000;
+
+	offset |= (instruction.ujtype.imm >> 8) & 0x000007fe; // imm[1:10]
+
+	offset |= (instruction.ujtype.imm << 3) & 0x00000800; // imm[11]
+
+	offset |= (instruction.ujtype.imm << 12) & 0x000ff000; // imm[12:19]
+
+	offset |= (instruction.ujtype.imm << 2) & 0x00100000;// imm[20]
+
+	return sign_extend_number(offset, 21);
 }
 
 int get_store_offset(Instruction instruction) {
-    /* YOUR CODE HERE */
-    return 0;
+	int offset = 0x00000000;
+
+	offset |= instruction.stype.imm5 & 0x0000001f; // imm[0:4]
+
+	offset |= (instruction.stype.imm7 << 5) & 0x00000fe0; // imm[5:11]
+
+	return sign_extend_number(offset, 12);
 }
 
 void handle_invalid_instruction(Instruction instruction) {

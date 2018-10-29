@@ -31,7 +31,7 @@ part2: riscv $(addsuffix _execute, $(ASM_TESTS))
 
 %_execute: riscvcode/code/%.input riscvcode/ref/%.solution riscv
 	@./riscv -r $< > riscvcode/out/$*.trace
-	@python2.7 part2_tester.py $*  	 	  
+	@python2.7 part2_tester.py $*
 
 test-utils:
 	gcc $(CFLAGS) -DTESTING -o test-utils test_utils.c utils.c $(CUNIT)
